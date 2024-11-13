@@ -26,9 +26,11 @@ export default function Test({
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div>test page {name}</div>
                             <div>{tester}</div>
-                            <div>{list.map((element: string) => {
-                                return (<li>{element}</li>);
-                            })}</div>
+                            <div>
+                                {list.map((element: string) => {
+                                    return <li>{element}</li>;
+                                })}
+                            </div>
                         </div>
                     </div>
                 </div>
