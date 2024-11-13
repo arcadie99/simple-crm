@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  app:
+    image: php:8.2-fpm
+    container_name: crm_app
+    working_dir: /var/www
+    volumes:
+      - ./crm:/var/www
+      - ./crm/storage:/var/www/storage
+      - ./crm/bootstrap/cache:/var/www/bootstrap/cache
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+    networks:
+      - crm-network
+    depends_on:
+      - db
+      - cache
+    command: >
+      sh -c "docker-php-ext-install pdo_mysql && php-fpm"
+  
+  webserver:
+    image: nginx:alpine
+    container_name: crm_nginx
+    depends_on:
+      - app
+    ports:
+      - "8080:80"           # Exposing port 8080 on host to port 80 in the container
+    volumes:
+      - ./crm:/var/www
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - crm-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password      # Set root password
+      MYSQL_DATABASE: crm                     # Default database to create
+      MYSQL_USER: user                        # Custom user for Laravel
+      MYSQL_PASSWORD: password                # Password for the custom user
+    volumes:
+      - db_data:/var/lib/mysql                # Persistent storage for MySQL data
+    networks:
+      - crm-network
+
+  cache:
+    image: redis:alpine
+    container_name: redis_cache
+    restart: always
+    ports:
+      - "6379:6379"         # Exposes Redis on port 6379
+    volumes:
+      - cache_data:/data    # Redis persistence
+    networks:
+      - crm-network
+
+volumes:
+  db_data:
+  cache_data:
+
+networks:
+  crm-network:
+    driver: bridge
+
