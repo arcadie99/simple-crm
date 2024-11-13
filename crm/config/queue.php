@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Queue Connection Name
@@ -11,7 +10,7 @@ return [
     | API, giving you convenient access to each backend using identical
     | syntax for each. The default queue connection is defined below.
     |
-    */
+     */
 
     'default' => env('QUEUE_CONNECTION', 'database'),
 
@@ -26,10 +25,9 @@ return [
     |
     | Drivers: "sync", "database", "beanstalkd", "sqs", "redis", "null"
     |
-    */
+     */
 
     'connections' => [
-
         'sync' => [
             'driver' => 'sync',
         ],
@@ -71,7 +69,6 @@ return [
             'block_for' => null,
             'after_commit' => false,
         ],
-
     ],
 
     /*
@@ -83,7 +80,7 @@ return [
     | batching information. These options can be updated to any database
     | connection and table which has been defined by your application.
     |
-    */
+     */
 
     'batching' => [
         'database' => env('DB_CONNECTION', 'sqlite'),
@@ -101,12 +98,11 @@ return [
     |
     | Supported drivers: "database-uuids", "dynamodb", "file", "null"
     |
-    */
+     */
 
     'failed' => [
         'driver' => env('QUEUE_FAILED_DRIVER', 'database-uuids'),
         'database' => env('DB_CONNECTION', 'sqlite'),
         'table' => 'failed_jobs',
     ],
-
 ];
